@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Kosan Management API
+  version: 1.0.0
+servers:
+  - url: http://backend-go:8080/api/v1
+
+paths:
+  /complaints:
+    post:
+      summary: Submit complaint
+      operationId: submitComplaint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - room_number
+                - issue_type
+                - description
+              properties:
+                room_number:
+                  type: string
+                  description: Nomor kamar penghuni
+                issue_type:
+                  type: string
+                  enum: [AC, Plumbing, Electrical, Furniture, Internet, Other]
+                  description: Jenis masalah
+                description:
+                  type: string
+                  description: Deskripsi lengkap masalah
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ticket_id:
+                    type: integer
+                  status:
+                    type: string
+                  message:
+                    type: string
+    
+    get:
+      summary: Get all complaints
+      operationId: getComplaints
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    ticket_id:
+                      type: integer
+                    room:
+                      type: string
+                    issue:
+                      type: string
+                    status:
+                      type: string
